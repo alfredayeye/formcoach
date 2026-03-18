@@ -8,7 +8,6 @@ import { RepDetector } from '../pose/repDetector'
 import { CONNECTIONS, LM } from '../pose/landmarks'
 
 const JOINT_COLOR_MAP = { green: '#00c853', yellow: '#ffd600', red: '#ff1744' }
-const DEFAULT_JOINT = '#00e5ff'
 const BONE_COLOR = 'rgba(255,255,255,0.45)'
 
 // Don't draw dots on face — only body joints
@@ -150,19 +149,29 @@ export function LiveSession({
         ctx.stroke()
       }
 
-      // Joints — skip face
+      // Joints — only draw if the analyzer flagged this joint (green/yellow/red)
+      // Uncolored joints are shown as small faint dots so you can still locate them
       lms.forEach((lm, i) => {
         if (FACE_INDICES.has(i)) return
         if ((lm.visibility ?? 0) < 0.4) return
         const color = analysis.jointColors.get(i)
-        ctx.fillStyle = color ? JOINT_COLOR_MAP[color] : DEFAULT_JOINT
-        ctx.beginPath()
-        ctx.arc(x(lm), y(lm), 8, 0, Math.PI * 2)
-        ctx.fill()
-        ctx.fillStyle = '#fff'
-        ctx.beginPath()
-        ctx.arc(x(lm), y(lm), 3, 0, Math.PI * 2)
-        ctx.fill()
+        if (color) {
+          // Prominent coloured dot
+          ctx.fillStyle = JOINT_COLOR_MAP[color]
+          ctx.beginPath()
+          ctx.arc(x(lm), y(lm), 10, 0, Math.PI * 2)
+          ctx.fill()
+          ctx.fillStyle = '#fff'
+          ctx.beginPath()
+          ctx.arc(x(lm), y(lm), 3.5, 0, Math.PI * 2)
+          ctx.fill()
+        } else {
+          // Small neutral dot — just marks the joint location
+          ctx.fillStyle = 'rgba(255,255,255,0.25)'
+          ctx.beginPath()
+          ctx.arc(x(lm), y(lm), 4, 0, Math.PI * 2)
+          ctx.fill()
+        }
       })
     },
     [],

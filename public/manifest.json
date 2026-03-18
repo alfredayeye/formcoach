@@ -1,0 +1,11 @@
+{
+  "name": "FormCoach",
+  "short_name": "FormCoach",
+  "description": "Real-time gym form analysis",
+  "start_url": ".",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": []
+}

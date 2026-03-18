@@ -38,17 +38,11 @@ function analyzeDeadlift(
   lms: NormalizedLandmark[],
   colors: Map<number, JointColor>,
   idx: ReturnType<typeof sideLMs>,
-  s: NormalizedLandmark, e: NormalizedLandmark, w: NormalizedLandmark,
+  s: NormalizedLandmark, _e: NormalizedLandmark, _w: NormalizedLandmark,
   h: NormalizedLandmark, k: NormalizedLandmark, a: NormalizedLandmark,
 ): FormAnalysis {
   const hipAngle = angleBetween(s, h, k)
-  const kneeAngle = angleBetween(h, k, a)
   const spineAngle = angleFromVertical(h, s) // torso tilt from vertical
-
-  // Check for excessive forward torso lean / back rounding
-  // At the bottom of a deadlift, torso lean > 60° is expected,
-  // but if the shoulder is significantly in front of the hip at any phase that's a cue
-  const shoulderAheadOfHip = s.x - h.x // positive if shoulder is to the right of hip
 
   let cue = ''
 
@@ -92,14 +86,13 @@ function analyzeDeadlift(
 // ─── OVERHEAD PRESS ─────────────────────────────────────────────────────────
 
 function analyzeOHP(
-  lms: NormalizedLandmark[],
+  _lms: NormalizedLandmark[],
   colors: Map<number, JointColor>,
   idx: ReturnType<typeof sideLMs>,
   s: NormalizedLandmark, e: NormalizedLandmark, w: NormalizedLandmark,
-  h: NormalizedLandmark, k: NormalizedLandmark, a: NormalizedLandmark,
+  h: NormalizedLandmark, _k: NormalizedLandmark, a: NormalizedLandmark,
 ): FormAnalysis {
   const elbowAngle = angleBetween(s, e, w)
-  const hipAngle = angleBetween(s, h, k) // checks anterior pelvic tilt / hip thrust
 
   // Wrist stacked over elbow: in side view, x should be close
   const wristElbowOffset = Math.abs(w.x - e.x)

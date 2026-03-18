@@ -35,7 +35,7 @@ export function LiveSession({
     let stream: MediaStream
     ;(async () => {
       stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } },
+        video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } },
       })
       if (videoRef.current) {
         videoRef.current.srcObject = stream
@@ -180,8 +180,8 @@ export function LiveSession({
 
 const styles: Record<string, React.CSSProperties> = {
   screen: { position: 'relative', width: '100%', height: '100%', background: '#000', overflow: 'hidden' },
-  video: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' },
-  canvas: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' },
+  video: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transform: 'scaleX(-1)' },
+  canvas: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transform: 'scaleX(-1)' },
   overlay: {
     position: 'absolute', inset: 0,
     background: 'rgba(0,0,0,0.65)',
